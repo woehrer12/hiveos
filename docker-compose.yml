@@ -1,0 +1,13 @@
+version : '3.7'
+
+services:
+
+  hiveos:
+    image: hiveos
+    container_name: hiveos
+    restart: always
+    volumes:
+    - ./:/hiveos/
+
+volumes:
+  mynetwork:
