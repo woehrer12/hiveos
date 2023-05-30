@@ -8,4 +8,10 @@ services:
     restart: always
     volumes:
     - ./:/hiveos/
-    network_mode: bridge
+    networks: 
+      - network1
+
+networks:
+  network1:
+    name: my-pre-existing-network
+    external: true

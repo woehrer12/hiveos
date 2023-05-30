@@ -13,9 +13,8 @@ conf = helper.config.initconfig()
 print("Start HiveOS")
 logging.info("Start hiveos.py")
 
-started = False
-
 def loop():
+    started = False
     while True:
         # Request Solar Power
         result = helper.mysql.requestsolarpower()
