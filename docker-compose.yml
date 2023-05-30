@@ -8,6 +8,4 @@ services:
     restart: always
     volumes:
     - ./:/hiveos/
-
-volumes:
-  mynetwork:
+    network_mode: bridge
