@@ -25,3 +25,4 @@ def requestsolarpower():
     except Exception as e:
         logging.error("Fehler beim lesen von solarpower Daten aus SQL: " + str(e))
         print("Fehler beim lesen von solarpower Daten aus SQL: " + str(e))
+        time.sleep(600)

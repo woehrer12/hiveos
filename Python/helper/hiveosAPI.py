@@ -107,8 +107,10 @@ def changefs(payload):
     if response.ok:
         data = response.json()
         print(data)
+        return True
     else:
         print('Fehler:', response.status_code)
+        return False
 
 def flightsheet():
 

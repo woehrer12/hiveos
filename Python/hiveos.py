@@ -41,15 +41,15 @@ def loop():
             started = True
 
         if avg > float(conf['hiveosminpower']) and started:
-            helper.telegramsend.send("Stop Mining")
             
             # Payload 0
             payload = {
                 'fs_id': None,
                 }
-
-            helper.hiveosAPI.changefs(payload)
-            started = False
+            if helper.hiveosAPI.changefs(payload):
+                helper.telegramsend.send("Stop Mining")
+                started = False
+            
         time.sleep(60)
 
 def benchmarking():
