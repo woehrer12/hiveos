@@ -82,10 +82,7 @@ def worker():
     else:
         print('Fehler:', response.status_code)
 
-def changefs(payload):
-
-    farm_id = conf['hiveosfarmid']
-    worker_id = conf['hiveosworkerid']
+def changefs(payload, farm_id, worker_id):
 
     # URL für die API-Anfrage zum Stoppen des Miners
     url = 'https://api.hiveos.farm/api/v2/farms/' + farm_id + '/workers/' + worker_id #+ '/command'

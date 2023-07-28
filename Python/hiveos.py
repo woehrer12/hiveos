@@ -10,11 +10,19 @@ logger = helper.functions.initlogger("hiveos.log")
 
 conf = helper.config.initconfig()
 
+
+farm_id = conf['hiveosfarmid']
+worker_id_1 = conf['hiveosworkerid_1']
+worker_id_2 = conf['hiveosworkerid_2']
+
+
 print("Start HiveOS")
 logging.info("Start hiveos.py")
 
 def loop():
-    started = False
+    started_1 = False
+    started_2 = False
+
     while True:
         # Request Solar Power
         result = helper.mysql.requestsolarpower()
@@ -30,27 +38,61 @@ def loop():
 
         print(avg)
 
-        if avg < float(conf['hiveosmaxpower']) and not started:
-            helper.telegramsend.send("Start Mining")
+        # Start 1
+
+        if avg < float(conf['hiveospower_1']) and not started_1:
 
             # Payload für RVN
             payload = {
                 'fs_id': '16959780',
                 }
-            helper.hiveosAPI.changefs(payload)
-            started = True
+            if helper.hiveosAPI.changefs(payload, farm_id, worker_id_1):
+                helper.telegramsend.send("Start Mining 1")
+                started_1 = True
+                time.sleep(600)
+                continue
 
-        if avg > float(conf['hiveosminpower']) and started:
+        # Start 2
+
+        if avg < float(conf['hiveospower_2']) and started_1 and not started_2:
+
+            # Payload für RVN
+            payload = {
+                'fs_id': '16959780',
+                }
+            if helper.hiveosAPI.changefs(payload, farm_id, worker_id_1):
+                helper.telegramsend.send("Start Mining 2")
+                started_1 = True
+                time.sleep(600)
+                continue
+
+        # Stop 2
+        if avg > float(conf['hiveosminpower']) and started_2:
             
             # Payload 0
             payload = {
                 'fs_id': None,
                 }
             if helper.hiveosAPI.changefs(payload):
-                helper.telegramsend.send("Stop Mining")
-                started = False
+                helper.telegramsend.send("Stop Mining 2")
+                started_1 = False
+                time.sleep(600)
+                continue
+        
+        # Stop 1
+        if avg > float(conf['hiveosminpower']) and started_1 and not started_2:
             
-        time.sleep(60)
+            # Payload 0
+            payload = {
+                'fs_id': None,
+                }
+            if helper.hiveosAPI.changefs(payload):
+                helper.telegramsend.send("Stop Mining 1")
+                started_1 = False
+                time.sleep(600)
+                continue
+            
+        time.sleep(600)
 
 def benchmarking():
     # Payload für ETC
