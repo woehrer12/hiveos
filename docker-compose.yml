@@ -8,10 +8,10 @@ services:
     restart: always
     volumes:
     - ./:/hiveos/
-    networks: 
-      - network1
+#     networks: 
+#       - network1
 
-networks:
-  network1:
-    name: my-pre-existing-network
-    external: true
+# networks:
+#   network1:
+#     name: my-pre-existing-network
+#     external: true

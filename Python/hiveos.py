@@ -48,6 +48,7 @@ def loop():
                 }
             if helper.hiveosAPI.changefs(payload, farm_id, worker_id_1):
                 helper.telegramsend.send("Start Mining 1")
+                print("Start Mining 1")
                 started_1 = True
                 time.sleep(600)
                 continue
@@ -58,11 +59,12 @@ def loop():
 
             # Payload für RVN
             payload = {
-                'fs_id': '16959780',
+                'fs_id': '16734657',
                 }
-            if helper.hiveosAPI.changefs(payload, farm_id, worker_id_1):
+            if helper.hiveosAPI.changefs(payload, farm_id, worker_id_2):
                 helper.telegramsend.send("Start Mining 2")
-                started_1 = True
+                print("Start Mining 2")
+                started_2 = True
                 time.sleep(600)
                 continue
 
@@ -73,9 +75,10 @@ def loop():
             payload = {
                 'fs_id': None,
                 }
-            if helper.hiveosAPI.changefs(payload):
+            if helper.hiveosAPI.changefs(payload, farm_id, worker_id_2):
                 helper.telegramsend.send("Stop Mining 2")
-                started_1 = False
+                print("Stop Mining 2")
+                started_2 = False
                 time.sleep(600)
                 continue
         
@@ -86,8 +89,9 @@ def loop():
             payload = {
                 'fs_id': None,
                 }
-            if helper.hiveosAPI.changefs(payload):
+            if helper.hiveosAPI.changefs(payload, farm_id, worker_id_1):
                 helper.telegramsend.send("Stop Mining 1")
+                print("Stop Mining 1")
                 started_1 = False
                 time.sleep(600)
                 continue
