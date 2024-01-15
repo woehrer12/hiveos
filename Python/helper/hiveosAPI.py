@@ -56,10 +56,7 @@ def workers():
         print('Fehler:', response.status_code)
 
 
-def worker():
-
-    farm_id = conf['hiveosfarmid']
-    worker_id = conf['hiveosworkerid']
+def worker(farm_id, worker_id):
 
     # URL für die API-Anfrage zum Stoppen des Miners
     url = 'https://api.hiveos.farm/api/v2/farms/' + farm_id + '/workers/' + worker_id
@@ -78,7 +75,7 @@ def worker():
     # Response auf Inhalt prüfen
     if response.ok:
         data = response.json()
-        print(data)
+        return(data)
     else:
         print('Fehler:', response.status_code)
 
@@ -135,3 +132,31 @@ def flightsheet():
         print(data)
     else:
         print('Fehler:', response.status_code)
+
+def command(payload, farm_id, worker_id):
+
+    # URL für die API-Anfrage zum Stoppen des Miners
+    url = 'https://api.hiveos.farm/api/v2/farms/' + farm_id + '/workers/' + worker_id + '/command'
+
+    print(url)
+
+    # API-Token
+    api_token = conf['hiveosAPI']
+
+    # Header mit dem API-Token
+    headers = {
+        'Authorization': f'Bearer {api_token}'
+    }
+
+    # Anfrage senden und Response erhalten
+    response = requests.post(url, headers=headers, json=payload)
+
+    # Response auf Inhalt prüfen
+    if response.ok:
+        data = response.json()
+        print(data)
+        return True
+    else:
+        print('Fehler:', response.status_code)
+        print(response)
+        return False
